@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Photos{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Photos</h1>
+    <p class="page-subtitle">{{ photos.count }} photo{{ photos.count|pluralize }}</p>
+  </div>
+</div>
+
+<div class="toolbar">
+  <form method="get" class="toolbar-search">
+    <i class="bi bi-search"></i>
+    <input type="text" name="q" value="{{ query }}" placeholder="Search photos…" class="toolbar-input" />
+  </form>
+  <div class="toolbar-right">
+    <select name="sort" class="sort-select" onchange="window.location.href='?sort='+this.value+'&q={{ query }}'">
+      <option value="-created_at" {% if sort == '-created_at' %}selected{% endif %}>Newest</option>
+      <option value="created_at" {% if sort == 'created_at' %}selected{% endif %}>Oldest</option>
+      <option value="name" {% if sort == 'name' %}selected{% endif %}>Name</option>
+      <option value="-size" {% if sort == '-size' %}selected{% endif %}>Largest</option>
+    </select>
+  </div>
+</div>
+
+{% if photos %}
+<div class="photo-masonry" id="photoGrid">
+  {% for photo in photos %}
+  <div class="photo-item" data-url="{{ photo.file.url }}" data-name="{{ photo.name }}" data-size="{{ photo.get_size_display }}">
+    <img src="{{ photo.file.url }}" alt="{{ photo.name }}" loading="lazy" class="photo-img" />
+    <div class="photo-overlay">
+      <p class="photo-name">{{ photo.name|truncatechars:20 }}</p>
+      <div class="photo-actions">
+        <a href="{% url 'download_file' photo.id %}" class="icon-btn light" title="Download"><i class="bi bi-download"></i></a>
+        <a href="{% url 'toggle_favorite' photo.id %}" class="icon-btn light" title="Favorite">
+          <i class="bi bi-star{% if photo.is_favorite %}-fill{% endif %}"></i>
+        </a>
+        <button class="icon-btn light expand-btn" title="Enlarge"><i class="bi bi-arrows-fullscreen"></i></button>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+  <i class="bi bi-images empty-icon"></i>
+  <p>{% if query %}No photos match "{{ query }}"{% else %}No photos yet. Upload images to see them here.{% endif %}</p>
+  <a href="{% url 'files' %}" class="btn-primary-dd">Upload Photos</a>
+</div>
+{% endif %}
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
+  <div class="lightbox-content">
+    <button class="lightbox-close" id="lightboxClose"><i class="bi bi-x-lg"></i></button>
+    <img src="" alt="" id="lightboxImg" class="lightbox-img" />
+    <div class="lightbox-meta">
+      <p id="lightboxName"></p>
+      <p id="lightboxSize"></p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const lightbox = document.getElementById('lightbox');
+const lbImg = document.getElementById('lightboxImg');
+const lbName = document.getElementById('lightboxName');
+const lbSize = document.getElementById('lightboxSize');
+
+document.querySelectorAll('.expand-btn, .photo-img').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    const item = this.closest('.photo-item');
+    lbImg.src = item.dataset.url;
+    lbName.textContent = item.dataset.name;
+    lbSize.textContent = item.dataset.size;
+    lightbox.classList.add('active');
+  });
+});
+
+document.getElementById('lightboxClose').addEventListener('click', () => lightbox.classList.remove('active'));
+document.getElementById('lightboxBackdrop').addEventListener('click', () => lightbox.classList.remove('active'));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') lightbox.classList.remove('active'); });
+</script>
+{% endblock %}

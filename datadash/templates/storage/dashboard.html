@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-subtitle">Welcome back{{ now|date:"A"|lower }}, {{ request.user.username }}</p>
+  </div>
+  <a href="{% url 'files' %}" class="btn-primary-dd">
+    <i class="bi bi-cloud-upload"></i> Upload Files
+  </a>
+</div>
+
+<!-- Stats Grid -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon files"><i class="bi bi-file-earmark"></i></div>
+    <div class="stat-body">
+      <p class="stat-value">{{ file_count }}</p>
+      <p class="stat-label">Total Files</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon photos"><i class="bi bi-images"></i></div>
+    <div class="stat-body">
+      <p class="stat-value">{{ photo_count }}</p>
+      <p class="stat-label">Photos</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon shared"><i class="bi bi-share"></i></div>
+    <div class="stat-body">
+      <p class="stat-value">{{ shared_count }}</p>
+      <p class="stat-label">Shared Files</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon trash"><i class="bi bi-trash3"></i></div>
+    <div class="stat-body">
+      <p class="stat-value">{{ trash_count }}</p>
+      <p class="stat-label">In Trash</p>
+    </div>
+  </div>
+</div>
+
+<!-- Storage Overview -->
+<div class="section-grid">
+  <div class="storage-card card-glass">
+    <div class="card-header-row">
+      <h3 class="card-heading"><i class="bi bi-hdd"></i> Storage Overview</h3>
+      <a href="{% url 'settings' %}" class="card-action">Manage</a>
+    </div>
+    <div class="storage-display">
+      <div class="storage-ring-wrap">
+        <svg class="storage-ring" viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="50" />
+          <circle class="ring-fill {% if storage_usage.is_near_limit %}ring-danger{% endif %}"
+                  cx="60" cy="60" r="50"
+                  stroke-dasharray="314"
+                  stroke-dashoffset="{{ storage_fill_offset|default:'314' }}"
+                  style="stroke-dashoffset: calc(314 - (314 * {{ storage_percent }} / 100));" />
+        </svg>
+        <div class="ring-center">
+          <p class="ring-pct">{{ storage_percent }}%</p>
+          <p class="ring-label">used</p>
+        </div>
+      </div>
+      <div class="storage-breakdown">
+        <div class="breakdown-item">
+          <span class="dot" style="background:#6366f1"></span>
+          <span>Used</span>
+          <span class="ms-auto fw-600">{{ storage_usage.used_bytes|filesizeformat }}</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="dot" style="background:#334155"></span>
+          <span>Free</span>
+          <span class="ms-auto fw-600">{{ storage_usage.remaining_bytes|filesizeformat }}</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="dot" style="background:#1e293b"></span>
+          <span>Total</span>
+          <span class="ms-auto fw-600">{{ storage_usage.max_bytes|filesizeformat }}</span>
+        </div>
+        {% if storage_usage.is_near_limit %}
+        <div class="storage-warning">
+          <i class="bi bi-exclamation-triangle"></i>
+          Storage nearly full — consider upgrading.
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions card-glass">
+    <div class="card-header-row">
+      <h3 class="card-heading"><i class="bi bi-lightning-charge"></i> Quick Actions</h3>
+    </div>
+    <div class="actions-grid">
+      <a href="{% url 'files' %}" class="action-tile">
+        <div class="action-icon" style="background: #6366f120; color:#6366f1">
+          <i class="bi bi-cloud-upload"></i>
+        </div>
+        <span>Upload</span>
+      </a>
+      <a href="{% url 'files' %}" class="action-tile">
+        <div class="action-icon" style="background: #8b5cf620; color:#8b5cf6">
+          <i class="bi bi-folder-plus"></i>
+        </div>
+        <span>New Folder</span>
+      </a>
+      <a href="{% url 'photos' %}" class="action-tile">
+        <div class="action-icon" style="background: #ec489920; color:#ec4899">
+          <i class="bi bi-images"></i>
+        </div>
+        <span>Photos</span>
+      </a>
+      <a href="{% url 'shared' %}" class="action-tile">
+        <div class="action-icon" style="background: #06b6d420; color:#06b6d4">
+          <i class="bi bi-share"></i>
+        </div>
+        <span>Share</span>
+      </a>
+      <a href="{% url 'trash' %}" class="action-tile">
+        <div class="action-icon" style="background: #f4433620; color:#f44336">
+          <i class="bi bi-trash3"></i>
+        </div>
+        <span>Trash</span>
+      </a>
+      <a href="{% url 'favorites' %}" class="action-tile">
+        <div class="action-icon" style="background: #eab30820; color:#eab308">
+          <i class="bi bi-star"></i>
+        </div>
+        <span>Starred</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Uploads -->
+<div class="card-glass mt-4">
+  <div class="card-header-row">
+    <h3 class="card-heading"><i class="bi bi-clock-history"></i> Recent Uploads</h3>
+    <a href="{% url 'recent' %}" class="card-action">View all</a>
+  </div>
+  {% if recent_files %}
+  <div class="file-list">
+    {% for file in recent_files %}
+    <div class="file-row">
+      <div class="file-icon-wrap">
+        <i class="bi bi-{{ file.get_icon }}"></i>
+      </div>
+      <div class="file-meta">
+        <p class="file-name">{{ file.name }}</p>
+        <p class="file-info">{{ file.get_size_display }} &middot; {{ file.created_at|timesince }} ago</p>
+      </div>
+      <div class="file-actions">
+        <a href="{% url 'download_file' file.id %}" class="icon-btn" title="Download"><i class="bi bi-download"></i></a>
+        <a href="{% url 'delete_file' file.id %}" class="icon-btn danger" title="Delete"
+           onclick="return confirm('Move to trash?')"><i class="bi bi-trash3"></i></a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <i class="bi bi-cloud-upload empty-icon"></i>
+    <p>No files yet. Upload your first file to get started.</p>
+    <a href="{% url 'files' %}" class="btn-primary-dd">Upload Files</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+{% block title %}Settings{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Settings</h1>
+    <p class="page-subtitle">Manage your account and preferences</p>
+  </div>
+</div>
+
+<div class="settings-layout">
+  <!-- Settings Sidebar -->
+  <nav class="settings-nav">
+    <a href="#account" class="settings-nav-item active"><i class="bi bi-person"></i> Account</a>
+    <a href="#appearance" class="settings-nav-item"><i class="bi bi-palette"></i> Appearance</a>
+    <a href="#storage" class="settings-nav-item"><i class="bi bi-hdd"></i> Storage</a>
+    <a href="#security" class="settings-nav-item"><i class="bi bi-shield-lock"></i> Security</a>
+    <a href="#danger" class="settings-nav-item danger"><i class="bi bi-exclamation-triangle"></i> Danger Zone</a>
+  </nav>
+
+  <!-- Settings Content -->
+  <div class="settings-content">
+
+    <!-- Account Section -->
+    <section class="settings-section card-glass" id="account">
+      <h3 class="settings-section-title"><i class="bi bi-person"></i> Account</h3>
+      <div class="avatar-edit-row">
+        <div class="avatar-lg">
+          {% if request.user.avatar %}
+            <img src="{{ request.user.avatar.url }}" alt="{{ request.user.username }}" />
+          {% else %}
+            <div class="avatar-placeholder lg">{{ request.user.username|first|upper }}</div>
+          {% endif %}
+        </div>
+        <div>
+          <p class="fw-500">{{ request.user.username }}</p>
+          <p class="text-muted small">{{ request.user.email }}</p>
+          <label for="{{ form.avatar.id_for_label }}" class="btn-outline-dd mt-1 cursor-pointer">
+            <i class="bi bi-camera"></i> Change Photo
+          </label>
+        </div>
+      </div>
+
+      <form method="post" enctype="multipart/form-data" class="settings-form">
+        {% csrf_token %}
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Username</label>
+            {{ form.username }}
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            {{ form.email }}
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Bio</label>
+          {{ form.bio }}
+        </div>
+        <div class="form-group d-none">
+          {{ form.avatar }}
+        </div>
+        <button type="submit" class="btn-primary-dd">Save Changes</button>
+      </form>
+    </section>
+
+    <!-- Appearance Section -->
+    <section class="settings-section card-glass" id="appearance">
+      <h3 class="settings-section-title"><i class="bi bi-palette"></i> Appearance</h3>
+      <p class="text-muted mb-3">Choose how DataDash looks for you.</p>
+      <div class="theme-options">
+        <label class="theme-option {% if request.user.theme == 'dark' %}selected{% endif %}" data-theme="dark">
+          <div class="theme-preview dark-preview">
+            <div class="preview-sidebar"></div>
+            <div class="preview-content">
+              <div class="preview-bar"></div>
+              <div class="preview-cards">
+                <div class="preview-card"></div>
+                <div class="preview-card"></div>
+              </div>
+            </div>
+          </div>
+          <div class="theme-label">
+            <i class="bi bi-moon-stars"></i> Dark
+          </div>
+        </label>
+        <label class="theme-option {% if request.user.theme == 'light' %}selected{% endif %}" data-theme="light">
+          <div class="theme-preview light-preview">
+            <div class="preview-sidebar"></div>
+            <div class="preview-content">
+              <div class="preview-bar"></div>
+              <div class="preview-cards">
+                <div class="preview-card"></div>
+                <div class="preview-card"></div>
+              </div>
+            </div>
+          </div>
+          <div class="theme-label">
+            <i class="bi bi-sun"></i> Light
+          </div>
+        </label>
+        <label class="theme-option {% if request.user.theme == 'system' %}selected{% endif %}" data-theme="system">
+          <div class="theme-preview system-preview">
+            <div class="preview-sidebar"></div>
+            <div class="preview-content">
+              <div class="preview-bar"></div>
+              <div class="preview-cards">
+                <div class="preview-card"></div>
+                <div class="preview-card"></div>
+              </div>
+            </div>
+          </div>
+          <div class="theme-label">
+            <i class="bi bi-circle-half"></i> System
+          </div>
+        </label>
+      </div>
+
+      <form method="post" enctype="multipart/form-data" class="mt-3">
+        {% csrf_token %}
+        <input type="hidden" name="username" value="{{ request.user.username }}" />
+        <input type="hidden" name="email" value="{{ request.user.email }}" />
+        <div class="form-group">
+          <label class="form-label">Default File View</label>
+          {{ form.default_view }}
+        </div>
+        <div class="form-group d-none">
+          {{ form.theme }}
+        </div>
+        <button type="submit" class="btn-primary-dd">Save Preferences</button>
+      </form>
+    </section>
+
+    <!-- Storage Section -->
+    <section class="settings-section card-glass" id="storage">
+      <h3 class="settings-section-title"><i class="bi bi-hdd"></i> Storage</h3>
+      <div class="storage-detail">
+        <div class="storage-stat-row">
+          <span>Used</span>
+          <span class="fw-600">{{ usage.used_bytes|filesizeformat }}</span>
+        </div>
+        <div class="storage-stat-row">
+          <span>Available</span>
+          <span class="fw-600">{{ usage.remaining_bytes|filesizeformat }}</span>
+        </div>
+        <div class="storage-stat-row">
+          <span>Total</span>
+          <span class="fw-600">{{ usage.max_bytes|filesizeformat }}</span>
+        </div>
+        <div class="storage-bar mt-3">
+          <div class="storage-fill {% if usage.is_near_limit %}danger{% endif %}" style="width:{{ usage.percentage }}%"></div>
+        </div>
+        <p class="text-muted small mt-2">{{ usage.percentage }}% used</p>
+      </div>
+      {% if usage.is_near_limit %}
+      <div class="upgrade-banner">
+        <div class="upgrade-icon"><i class="bi bi-lightning-charge-fill"></i></div>
+        <div>
+          <p class="fw-600">Storage almost full</p>
+          <p class="text-muted small">Upgrade to get more space and continue uploading.</p>
+        </div>
+        <button class="btn-upgrade ms-auto">Upgrade Plan</button>
+      </div>
+      {% endif %}
+    </section>
+
+    <!-- Security Section -->
+    <section class="settings-section card-glass" id="security">
+      <h3 class="settings-section-title"><i class="bi bi-shield-lock"></i> Security</h3>
+      <div class="settings-subsection">
+        <h4 class="subsection-title">Change Password</h4>
+        <a href="{% url 'password_reset' %}" class="btn-outline-dd">
+          <i class="bi bi-key"></i> Request Password Reset Email
+        </a>
+      </div>
+      <div class="settings-subsection">
+        <h4 class="subsection-title">Login History</h4>
+        <div class="login-history-list">
+          {% for entry in login_history %}
+          <div class="login-entry">
+            <div class="login-entry-icon {% if entry.success %}success{% else %}fail{% endif %}">
+              <i class="bi bi-{% if entry.success %}check{% else %}x{% endif %}-circle"></i>
+            </div>
+            <div class="login-entry-meta">
+              <p class="fw-500">{{ entry.ip_address|default:"Unknown IP" }}</p>
+              <p class="text-muted small">{{ entry.timestamp|date:"M d, Y — H:i" }}</p>
+            </div>
+            <span class="badge-dd {% if entry.success %}green{% else %}red{% endif %} ms-auto">
+              {{ entry.success|yesno:"Success,Failed" }}
+            </span>
+          </div>
+          {% empty %}
+          <p class="text-muted">No login history available.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Danger Zone -->
+    <section class="settings-section card-glass danger-zone" id="danger">
+      <h3 class="settings-section-title danger"><i class="bi bi-exclamation-triangle"></i> Danger Zone</h3>
+      <div class="danger-item">
+        <div>
+          <p class="fw-600">Delete Account</p>
+          <p class="text-muted small">Permanently delete your account and all your files. This cannot be undone.</p>
+        </div>
+        <button class="btn-danger-dd" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+          Delete Account
+        </button>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- Delete Account Modal -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-dark">
+      <div class="modal-header border-0">
+        <h5 class="modal-title text-danger"><i class="bi bi-exclamation-triangle"></i> Delete Account</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p>This will <strong>permanently delete</strong> your account, all your files, and all associated data. <strong>This cannot be undone.</strong></p>
+        <form method="post" action="{% url 'delete_account' %}">
+          {% csrf_token %}
+          <button type="submit" class="btn-danger-dd w-100 mt-3">Yes, Delete My Account</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.querySelectorAll('.theme-option').forEach(opt => {
+  opt.addEventListener('click', function() {
+    document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('selected'));
+    this.classList.add('selected');
+    const t = this.dataset.theme;
+    document.querySelector('[name="theme"]').value = t;
+    document.documentElement.dataset.theme = t === 'system'
+      ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      : t;
+  });
+});
+</script>
+{% endblock %}

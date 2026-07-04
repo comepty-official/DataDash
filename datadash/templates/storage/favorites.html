@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Favorites{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Favorites</h1>
+    <p class="page-subtitle">{{ favorites.count }} starred file{{ favorites.count|pluralize }}</p>
+  </div>
+</div>
+
+{% if favorites %}
+<div class="file-grid">
+  {% for file in favorites %}
+  <div class="file-card">
+    <div class="file-card-preview">
+      {% if file.is_image %}
+        <img src="{{ file.file.url }}" alt="{{ file.name }}" class="preview-img" loading="lazy" />
+      {% else %}
+        <div class="file-card-icon"><i class="bi bi-{{ file.get_icon }}"></i></div>
+      {% endif %}
+      <div class="file-card-overlay">
+        <a href="{% url 'download_file' file.id %}" class="icon-btn light" title="Download"><i class="bi bi-download"></i></a>
+        <a href="{% url 'toggle_favorite' file.id %}" class="icon-btn light active-fav" title="Remove from favorites">
+          <i class="bi bi-star-fill"></i>
+        </a>
+      </div>
+    </div>
+    <div class="file-card-body">
+      <p class="file-card-name" title="{{ file.name }}">{{ file.name|truncatechars:24 }}</p>
+      <p class="file-card-meta">{{ file.get_size_display }}</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+  <i class="bi bi-star empty-icon"></i>
+  <p>No favorites yet. Star files to find them quickly here.</p>
+  <a href="{% url 'files' %}" class="btn-primary-dd">Browse Files</a>
+</div>
+{% endif %}
+{% endblock %}

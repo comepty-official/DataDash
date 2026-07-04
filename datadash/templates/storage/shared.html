@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Shared{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Shared</h1>
+    <p class="page-subtitle">Files you've shared with others</p>
+  </div>
+</div>
+
+{% if shared_items %}
+<div class="card-glass">
+  <div class="table-responsive">
+    <table class="dd-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Shared With</th>
+          <th>Permission</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in shared_items %}
+        <tr>
+          <td>
+            <div class="table-name">
+              <i class="bi bi-file-earmark"></i>
+              {{ item.get_item_name }}
+            </div>
+          </td>
+          <td>
+            {% if item.is_public %}
+              <span class="badge-dd blue"><i class="bi bi-globe"></i> Public Link</span>
+            {% else %}
+              {{ item.shared_with_email|default:item.shared_with.email|default:"—" }}
+            {% endif %}
+          </td>
+          <td><span class="badge-dd {% if item.permission == 'edit' %}green{% else %}gray{% endif %}">{{ item.permission|title }}</span></td>
+          <td class="text-muted">{{ item.created_at|date:"M d, Y" }}</td>
+          <td>
+            {% if item.is_expired %}
+              <span class="badge-dd red">Expired</span>
+            {% else %}
+              <span class="badge-dd green">Active</span>
+            {% endif %}
+          </td>
+          <td>
+            <div class="row-actions">
+              <button class="icon-btn" onclick="copyLink('{{ item.share_link }}')" title="Copy link">
+                <i class="bi bi-link-45deg"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="empty-state">
+  <i class="bi bi-share empty-icon"></i>
+  <p>You haven't shared any files yet.</p>
+  <a href="{% url 'files' %}" class="btn-primary-dd">Browse Files</a>
+</div>
+{% endif %}
+{% endblock %}
+{% block extra_js %}
+<script>
+function copyLink(uuid) {
+  const url = window.location.origin + '/share/' + uuid + '/';
+  navigator.clipboard.writeText(url).then(() => {
+    alert('Link copied to clipboard!');
+  });
+}
+</script>
+{% endblock %}

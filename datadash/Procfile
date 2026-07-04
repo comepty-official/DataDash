@@ -1,0 +1,1 @@
+web: gunicorn datadash.wsgi:application

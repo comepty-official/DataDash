@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Search{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Search</h1>
+    {% if query %}<p class="page-subtitle">Results for "{{ query }}"</p>{% endif %}
+  </div>
+</div>
+
+<div class="toolbar mb-4">
+  <form method="get" class="toolbar-search" style="max-width:600px;width:100%">
+    <i class="bi bi-search"></i>
+    <input type="text" name="q" value="{{ query }}" placeholder="Search everything…" class="toolbar-input" autofocus />
+  </form>
+</div>
+
+{% if query %}
+  {% if results_folders %}
+  <div class="section-label">Folders ({{ results_folders.count }})</div>
+  <div class="folder-grid mb-4">
+    {% for folder in results_folders %}
+    <div class="folder-card" style="--folder-color: {{ folder.color }}">
+      <a href="{% url 'files_folder' folder.id %}" class="folder-link">
+        <div class="folder-icon"><i class="bi bi-folder-fill"></i></div>
+        <p class="folder-name">{{ folder.name }}</p>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if results_files %}
+  <div class="section-label">Files ({{ results_files.count }})</div>
+  <div class="file-list card-glass">
+    {% for file in results_files %}
+    <div class="file-row">
+      <div class="file-icon-wrap"><i class="bi bi-{{ file.get_icon }}"></i></div>
+      <div class="file-meta">
+        <p class="file-name">{{ file.name }}</p>
+        <p class="file-info">{{ file.get_size_display }} &middot; {{ file.created_at|timesince }} ago</p>
+      </div>
+      <div class="file-actions">
+        <a href="{% url 'download_file' file.id %}" class="icon-btn" title="Download"><i class="bi bi-download"></i></a>
+        <a href="{% url 'delete_file' file.id %}" class="icon-btn danger" title="Delete"
+           onclick="return confirm('Move to trash?')"><i class="bi bi-trash3"></i></a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if not results_files and not results_folders %}
+  <div class="empty-state">
+    <i class="bi bi-search empty-icon"></i>
+    <p>No results found for "{{ query }}"</p>
+  </div>
+  {% endif %}
+{% else %}
+<div class="empty-state">
+  <i class="bi bi-search empty-icon"></i>
+  <p>Type something to search your files, folders, and photos.</p>
+</div>
+{% endif %}
+{% endblock %}

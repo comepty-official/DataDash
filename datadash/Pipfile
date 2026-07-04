@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pillow = "==10.4.0"
+python-decouple = "==3.8"
+django-crispy-forms = "==2.1"
+crispy-bootstrap5 = "==2024.2"
+django-storages = "==1.14.3"
+whitenoise = "==6.7.0"
+psycopg2-binary = "*"
+django-allauth = "==0.63.3"
+django-widget-tweaks = "==1.5.0"
+humanize = "==4.10.0"
+django = "*"
+django-db-connection-pool = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.13"

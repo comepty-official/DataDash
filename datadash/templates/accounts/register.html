@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Create Account{% endblock %}
+{% block body_class %}auth-body{% endblock %}
+{% block auth_content %}
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <div class="brand-icon-lg">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="12" fill="url(#lg2)"/>
+          <path d="M10 14h20M10 20h13M10 26h16" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <defs><linearGradient id="lg2" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/>
+          </linearGradient></defs>
+        </svg>
+      </div>
+      <h1 class="auth-brand-name">DataDash</h1>
+    </div>
+    <h2 class="auth-title">Create your account</h2>
+    <p class="auth-subtitle">Start with 3 GB free — no credit card needed</p>
+
+    <form method="post" class="auth-form">
+      {% csrf_token %}
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <div class="input-icon-wrap">
+          <i class="bi bi-person input-icon"></i>
+          {{ form.username }}
+        </div>
+        {% if form.username.errors %}<p class="field-error">{{ form.username.errors|join:", " }}</p>{% endif %}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email address</label>
+        <div class="input-icon-wrap">
+          <i class="bi bi-envelope input-icon"></i>
+          {{ form.email }}
+        </div>
+        {% if form.email.errors %}<p class="field-error">{{ form.email.errors|join:", " }}</p>{% endif %}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <div class="input-icon-wrap">
+          <i class="bi bi-lock input-icon"></i>
+          {{ form.password1 }}
+          <button type="button" class="pw-toggle" onclick="togglePw(this)"><i class="bi bi-eye"></i></button>
+        </div>
+        {% if form.password1.errors %}<p class="field-error">{{ form.password1.errors|join:", " }}</p>{% endif %}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Confirm Password</label>
+        <div class="input-icon-wrap">
+          <i class="bi bi-lock-fill input-icon"></i>
+          {{ form.password2 }}
+          <button type="button" class="pw-toggle" onclick="togglePw(this)"><i class="bi bi-eye"></i></button>
+        </div>
+        {% if form.password2.errors %}<p class="field-error">{{ form.password2.errors|join:", " }}</p>{% endif %}
+      </div>
+      <button type="submit" class="btn-auth">Create Account <i class="bi bi-arrow-right"></i></button>
+    </form>
+    <p class="auth-footer">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+  </div>
+  <div class="auth-visual">
+    <div class="visual-content">
+      <h3>Everything in one place.</h3>
+      <p>Upload photos, documents, videos. Access them from any device, anytime.</p>
+      <div class="visual-features">
+        <div class="vf-item"><i class="bi bi-cloud-upload"></i><span>Drag &amp; drop uploads</span></div>
+        <div class="vf-item"><i class="bi bi-folder2-open"></i><span>Smart folder organisation</span></div>
+        <div class="vf-item"><i class="bi bi-share"></i><span>One-click sharing</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function togglePw(btn) {
+  const input = btn.closest('.input-icon-wrap').querySelector('input');
+  const icon = btn.querySelector('i');
+  if (input.type === 'password') { input.type = 'text'; icon.className = 'bi bi-eye-slash'; }
+  else { input.type = 'password'; icon.className = 'bi bi-eye'; }
+}
+</script>
+{% endblock %}

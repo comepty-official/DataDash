@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light only" />
+  <title>Coach Samuel Kayode</title>
+  <meta name="description" content="For promoting my digital product. Affiliate marketing" />
+  <meta property="og:site_name" content="Samuelkayode" />
+  <meta property="og:title" content="Coach Samuel kayode" />
+  <meta property="og:type" content="website" />
+  <meta property="og:description" content="For promoting my digital product. Affiliate marketing" />
+  <meta property="og:image" content="https://samuelkayodegrownacademy.carrd.co/assets/images/card.jpg?v=1819d47d" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1280" />
+  <meta property="og:image:height" content="800" />
+  <meta property="og:url" content="https://samuelkayodegrownacademy.carrd.co" />
+  <meta property="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="https://samuelkayodegrownacademy.carrd.co" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+  /* ── TOKENS ── */
+  :root {
+    --ink:        #0B0E1A;
+    --ink-mid:    #131826;
+    --card-bg:    #181E2E;
+    --blue:       #1A56FF;
+    --blue-light: #5584FF;
+    --blue-glow:  rgba(26,86,255,0.32);
+    --gold:       #F4C842;
+    --white:      #EEF2FF;
+    --muted:      #7A86A8;
+    --red:        #EF4444;
+    --font-d: 'Sora', sans-serif;
+    --font-b: 'Inter', sans-serif;
+    --r-sm: 8px;
+    --r-md: 16px;
+    --r-lg: 28px;
+    --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+    --ease-out:    cubic-bezier(0.22,1,0.36,1);
+  }
+
+  /* ── RESET ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body {
+    background: var(--ink);
+    color: var(--white);
+    font-family: var(--font-b);
+    line-height: 1.65;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    min-width: 320px;
+  }
+  a { color: inherit; text-decoration: none; }
+  ul, ol { list-style: none; }
+  img { display: block; max-width: 100%; height: auto; }
+  strong { font-weight: 700; color: inherit; }
+  em { font-style: italic; }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--ink); }
+  ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 99px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  /* ── AMBIENT BG ── */
+  .bg-dots {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: radial-gradient(circle, rgba(26,86,255,0.07) 1px, transparent 1px);
+    background-size: 36px 36px;
+  }
+  .bg-glow {
+    position: fixed; top: -180px; left: 50%; z-index: 0; pointer-events: none;
+    transform: translateX(-50%);
+    width: 760px; height: 480px;
+    background: radial-gradient(ellipse, rgba(26,86,255,0.15) 0%, transparent 70%);
+    animation: glowPulse 7s ease-in-out infinite;
+  }
+  @keyframes glowPulse {
+    0%,100% { opacity:.7; transform: translateX(-50%) scale(1); }
+    50%      { opacity:1;  transform: translateX(-50%) scale(1.1); }
+  }
+
+  /* ── URGENCY BAR ── */
+  .urgency-bar {
+    background: var(--red);
+    text-align: center; padding: .55rem 1rem;
+    font-size: .82rem; font-weight: 700; letter-spacing: .04em;
+    color: #fff; position: relative; z-index: 200;
+    animation: urgencyFlash 2.8s ease-in-out infinite;
+  }
+  @keyframes urgencyFlash {
+    0%,100% { background: var(--red); }
+    50%      { background: #b91c1c; }
+  }
+
+  /* ── LAYOUT ── */
+  .site-wrapper {
+    display: flex; flex-direction: column;
+    align-items: center; min-height: 100vh;
+    position: relative; z-index: 1;
+    padding: 2.5rem 1.5rem 3rem;
+  }
+  .site-main {
+    width: 100%; max-width: 640px;
+    background: #fff;
+    border-radius: var(--r-lg);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+    overflow: hidden;
+    position: relative; z-index: 1;
+  }
+  .inner {
+    padding: 2.75rem 2.5rem;
+    display: flex; flex-direction: column;
+    gap: 1.5rem;
+    color: #111;
+  }
+
+  /* ── TEXT COMPONENTS ── */
+  .text-component { line-height: 1.6; }
+
+  /* text01 — big headline, blue/purple */
+  #text01 {
+    font-family: var(--font-d);
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 800;
+    color: #4200FF;
+    line-height: 1.25;
+    letter-spacing: -.02em;
+    animation: fadeSlideDown .6s var(--ease-spring) both;
+  }
+
+  /* text02 — italic intro paragraph */
+  #text02 {
+    font-family: var(--font-b);
+    font-size: 1rem;
+    color: #111;
+    line-height: 1.7;
+    background: rgba(26,86,255,0.05);
+    border-left: 4px solid var(--blue);
+    border-radius: 0 var(--r-sm) var(--r-sm) 0;
+    padding: 1rem 1.25rem;
+  }
+
+  /* text03, text04 — story paragraphs */
+  #text03, #text04 {
+    font-family: var(--font-b);
+    font-size: .97rem;
+    color: #222;
+    line-height: 1.75;
+    background: #f8f9ff;
+    border-radius: var(--r-sm);
+    padding: 1.1rem 1.25rem;
+  }
+
+  /* text05 — YOU statement */
+  #text05 {
+    font-family: var(--font-d);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0a0a0a;
+    text-align: center;
+    background: linear-gradient(135deg, #f0f4ff, #e8edff);
+    border-radius: var(--r-sm);
+    padding: 1rem 1.25rem;
+  }
+
+  /* text06 — section label */
+  #text06 {
+    font-family: var(--font-b);
+    font-size: 1rem;
+    font-style: italic;
+    color: #444;
+    text-align: center;
+  }
+
+  /* text07 — checklist */
+  #text07 {
+    font-family: var(--font-b);
+    font-size: .97rem;
+    color: #1a1a1a;
+    line-height: 2;
+    background: #f0fff4;
+    border: 1px solid rgba(34,197,94,0.25);
+    border-radius: var(--r-sm);
+    padding: 1.1rem 1.25rem;
+  }
+
+  /* text08 — bold statement */
+  #text08 {
+    font-family: var(--font-d);
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111;
+    text-align: center;
+  }
+
+  /* text09 — RED warning */
+  #text09 {
+    font-family: var(--font-d);
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #EF4444;
+    text-align: center;
+    background: rgba(239,68,68,0.07);
+    border: 1.5px solid rgba(239,68,68,0.2);
+    border-radius: var(--r-sm);
+    padding: .9rem 1rem;
+  }
+
+  /* text10 — "This is not for you:" */
+  #text10 {
+    font-family: var(--font-b);
+    font-size: 1rem;
+    color: #333;
+    font-weight: 600;
+  }
+
+  /* text11 — exclusion list */
+  #text11 {
+    font-family: var(--font-b);
+    font-size: .95rem;
+    color: #444;
+    line-height: 2;
+    background: #fff5f5;
+    border: 1px solid rgba(239,68,68,0.15);
+    border-radius: var(--r-sm);
+    padding: 1rem 1.25rem;
+  }
+
+  /* text12 — ACTION TAKERS bold */
+  #text12 {
+    font-family: var(--font-d);
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #111;
+    text-align: center;
+    background: linear-gradient(135deg, #fff9e6, #fff3cc);
+    border: 1.5px solid rgba(244,200,66,0.4);
+    border-radius: var(--r-sm);
+    padding: 1rem 1.25rem;
+  }
+
+  /* text13 — RED heading for testimonials */
+  #text13 {
+    font-family: var(--font-d);
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #FF0000;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  /* text14 — closing urgency italic */
+  #text14 {
+    font-family: var(--font-b);
+    font-size: .95rem;
+    font-style: italic;
+    color: #333;
+    text-align: center;
+    background: #f8f9ff;
+    border-radius: var(--r-sm);
+    padding: 1rem 1.25rem;
+    line-height: 1.7;
+  }
+
+  /* ── IMAGE COMPONENTS ── */
+  .image-component {
+    display: block;
+    line-height: 0;
+    text-align: center;
+  }
+  .image-component .frame {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    border-radius: var(--r-md);
+    box-shadow: 0 6px 28px rgba(0,0,0,0.18);
+    transition: transform .35s var(--ease-spring), box-shadow .35s;
+  }
+  .image-component .frame:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 40px rgba(26,86,255,0.18);
+  }
+  .image-component .frame img {
+    max-width: 100%;
+    display: block;
+    border-radius: inherit;
+  }
+  /* instance-1..12: original had 15rem width for all */
+  .image-component.instance-1 .frame,
+  .image-component.instance-2 .frame,
+  .image-component.instance-3 .frame,
+  .image-component.instance-4 .frame,
+  .image-component.instance-5 .frame,
+  .image-component.instance-6 .frame,
+  .image-component.instance-7 .frame,
+  .image-component.instance-8 .frame,
+  .image-component.instance-9 .frame,
+  .image-component.instance-10 .frame,
+  .image-component.instance-11 .frame,
+  .image-component.instance-12 .frame {
+    width: min(15rem, 100%);
+  }
+
+  /* ── IMAGE GRID (group consecutive images) ── */
+  .img-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .img-group .image-component { flex: 0 0 auto; }
+
+  /* ── VIDEO COMPONENTS ── */
+  .video-component {
+    width: 100%;
+    position: relative;
+  }
+  .video-component .frame {
+    background: #000;
+    display: block;
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    border-radius: var(--r-md);
+    box-shadow: 0 8px 36px rgba(0,0,0,0.4);
+    position: relative;
+  }
+  .video-component .frame .player {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    border: none;
+  }
+
+  /* ── BUTTONS ── */
+  .buttons-component {
+    display: flex;
+    justify-content: center;
+    gap: .75rem;
+    flex-wrap: wrap;
+  }
+  .buttons-component li { width: 100%; max-width: 420px; }
+  .buttons-component li a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-family: var(--font-d);
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: .03em;
+    text-decoration: none;
+    color: #fff;
+    border-radius: var(--r-sm);
+    background: #000;
+    transition: transform .25s var(--ease-spring), box-shadow .25s;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.3;
+  }
+  .buttons-component li a.n01 {
+    background: linear-gradient(135deg, #0047FF 0%, #1A56FF 100%);
+    box-shadow: 0 6px 28px rgba(0,71,255,0.45);
+    animation: pulseCTA 2.5s ease-in-out infinite;
+  }
+  .buttons-component li a.n01:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 14px 40px rgba(0,71,255,0.6);
+    animation: none;
+  }
+  @keyframes pulseCTA {
+    0%,100% { box-shadow: 0 6px 28px rgba(0,71,255,0.45); }
+    50%      { box-shadow: 0 10px 44px rgba(0,71,255,0.7); }
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(26,86,255,0.2), transparent);
+    margin: .5rem 0;
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0; transform: translateY(22px);
+    transition: opacity .6s var(--ease-out), transform .6s var(--ease-out);
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── CREDITS ── */
+  #credits {
+    display: block; text-align: center; opacity: 1;
+    margin-top: .5rem;
+  }
+  #credits span {
+    border-radius: 24px;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: 1;
+    position: relative;
+    width: auto;
+    color: rgba(0,0,0,0.498);
+  }
+  #credits span a {
+    display: inline-block;
+    padding: .5em .375em;
+    position: relative;
+    text-decoration: none;
+    transition: color .25s ease, transform .25s ease;
+    z-index: 1;
+  }
+  #credits span a::before { content: '( '; opacity: 1; transition: opacity .25s ease; }
+  #credits span a::after  { content: ' )'; opacity: 1; transition: opacity .25s ease; }
+  #credits span::after {
+    background-image: linear-gradient(30deg, #A464A1 15%, #3B5DAD 85%);
+    border-radius: inherit;
+    box-shadow: 0 .25em 1.25em 0 rgba(0,0,0,0.25);
+    content: '';
+    display: block;
+    height: calc(100% + 2px); left: -1px;
+    opacity: 0; pointer-events: none;
+    position: absolute; top: -1px;
+    transition: opacity .25s ease, box-shadow .25s ease, transform .25s ease;
+    width: calc(100% + 2px);
+  }
+  #credits span:hover a { color: #fff !important; transform: scale(1.1) translateY(-.05rem); }
+  #credits span:hover a::before,
+  #credits span:hover a::after { opacity: 0; }
+  #credits span:hover::after { opacity: 1; transform: scale(1.1) translateY(-.05rem); }
+
+  /* ── KEYFRAMES ── */
+  @keyframes fadeSlideDown { from{opacity:0;transform:translateY(-14px)} to{opacity:1;transform:none} }
+  @keyframes fadeSlideUp   { from{opacity:0;transform:translateY(20px)}  to{opacity:1;transform:none} }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 736px) {
+    .inner { padding: 2rem 1.25rem; gap: 1.25rem; }
+    #text01 { font-size: 1.4rem; }
+  }
+  @media (max-width: 480px) {
+    .site-wrapper { padding: 1rem .75rem 2rem; }
+    .inner { padding: 1.5rem 1rem; gap: 1rem; }
+    .image-component.instance-1 .frame,
+    .image-component.instance-2 .frame,
+    .image-component.instance-3 .frame,
+    .image-component.instance-4 .frame,
+    .image-component.instance-5 .frame,
+    .image-component.instance-6 .frame,
+    .image-component.instance-7 .frame,
+    .image-component.instance-8 .frame,
+    .image-component.instance-9 .frame,
+    .image-component.instance-10 .frame,
+    .image-component.instance-11 .frame,
+    .image-component.instance-12 .frame { width: 100%; }
+  }
+  @media (max-width: 360px) {
+    .inner { padding: 1.25rem .85rem; }
+    #text01 { font-size: 1.25rem; }
+  }
+  </style>
+</head>
+<body>
+
+  <div class="bg-dots" aria-hidden="true"></div>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <!-- URGENCY BAR -->
+  <div class="urgency-bar" role="alert">
+    🔥 The training starts SOON — entry will be locked. Don't miss out!
+  </div>
+
+  <div class="site-wrapper">
+    <div class="site-main">
+      <div class="inner">
+
+        <!-- text01 -->
+        <h1 id="text01" class="text-component">
+          <strong>For years, he hustled from morning to night yet remained broke until he discovered THIS hidden strategy:</strong>
+        </h1>
+
+        <!-- text02 -->
+        <p id="text02" class="text-component reveal">
+          <em>How a Frustrated Roadside Painter Went From N30k to Over N300k Monthly<br />
+          Using Nothing But His Phone - And How You Can Do The Same (Even As a Complete Beginner! Note that you need Telegram)<br />
+          Inside this powerful FREE training, you will learn...<br />
+          The breakthrough online business most Africans like Victor Nathel and his mentees and other ordinary Nigerians used to explode their income in 30 days<br />
+          Even if you have zero experience, no degree no tech skills and no laptop.</em>
+        </p>
+
+        <!-- image01 -->
+        <div id="image01" class="image-component instance-1 reveal">
+          <span class="frame"><img src="assets/images/image01.jpg?v=1819d47d" alt="" /></span>
+        </div>
+
+        <!-- BUTTON 1 -->
+        <ul id="buttons01" class="buttons-component reveal">
+          <li><a href="https://chat.whatsapp.com/GYdrMOw2tpGGhaHhPxHReT?s=cl&p=i&mlu=4" class="n01" role="button">CLICK HERE TO ACCESS THE TRAINING</a></li>
+        </ul>
+
+        <div class="divider"></div>
+
+        <!-- image02, image03, image04 -->
+        <div class="img-group reveal">
+          <div id="image02" class="image-component instance-2">
+            <span class="frame"><img src="assets/images/image02.jpg?v=1819d47d" alt="" /></span>
+          </div>
+          <div id="image03" class="image-component instance-3">
+            <span class="frame"><img src="assets/images/image03.jpg?v=1819d47d" alt="" /></span>
+          </div>
+          <div id="image04" class="image-component instance-4">
+            <span class="frame"><img src="assets/images/image04.jpg?v=1819d47d" alt="" /></span>
+          </div>
+        </div>
+
+        <!-- text03 -->
+        <p id="text03" class="text-component reveal">
+          <strong>Before the huge credit alerts, Victor Nathel was a frustrated roadside painter earning ₦30,000 a month.<br />
+          He couldn't afford basic needs or support his family<br />
+          He also had no special skills or any experience with making money online. In fact, he didn't know how to properly use a phone<br />
+          See what his life looked like back then below</strong>
+        </p>
+
+        <!-- image05, image06 -->
+        <div class="img-group reveal">
+          <div id="image05" class="image-component instance-5">
+            <span class="frame"><img src="assets/images/image05.jpg?v=1819d47d" alt="" /></span>
+          </div>
+          <div id="image06" class="image-component instance-6">
+            <span class="frame"><img src="assets/images/image06.jpg?v=1819d47d" alt="" /></span>
+          </div>
+        </div>
+
+        <!-- text04 -->
+        <p id="text04" class="text-component reveal">
+          <strong>Then he found this same information you're about to see in the training and within 30 days, he earned his first ₦100,000<br />
+          A few months later, the numbers grew beyond what he ever imagined<br />
+          And today he travels the world, takes care of his family and lives with freedom and enjoyment all because of the simple strategy in this training</strong>
+        </p>
+
+        <!-- image07, image08, image09, image10 -->
+        <div class="img-group reveal">
+          <div id="image07" class="image-component instance-7">
+            <span class="frame"><img src="assets/images/image07.jpg?v=1819d47d" alt="" /></span>
+          </div>
+          <div id="image08" class="image-component instance-8">
+            <span class="frame"><img src="assets/images/image08.jpg?v=1819d47d" alt="" title="**HE HAS WIN MANY AWARDS ON THE INTERNET**" /></span>
+          </div>
+          <div id="image09" class="image-component instance-9">
+            <span class="frame"><img src="assets/images/image09.jpg?v=1819d47d" alt="" title="**HE HAS WIN MANY AWARDS ON THE INTERNET**" /></span>
+          </div>
+          <div id="image10" class="image-component instance-10">
+            <span class="frame"><img src="assets/images/image10.jpg?v=1819d47d" alt="" title="**HE HAS WIN MANY AWARDS ON THE INTERNET**" /></span>
+          </div>
+        </div>
+
+        <!-- BUTTON 2 -->
+        <ul id="buttons02" class="buttons-component reveal">
+          <li><a href="https://chat.whatsapp.com/GYdrMOw2tpGGhaHhPxHReT?s=cl&p=i&mlu=4" class="n01" role="button">CLICK HERE TO ACCESS THE TRAINING</a></li>
+        </ul>
+
+        <div class="divider"></div>
+
+        <!-- text05 -->
+        <p id="text05" class="text-component reveal">Now it is time for YOU to also rewrite your story with the same exact training that he used</p>
+
+        <!-- text06 -->
+        <p id="text06" class="text-component reveal"><em>Here's what you'll learn during the training...</em></p>
+
+        <!-- text07 -->
+        <p id="text07" class="text-component reveal">
+          ✅How to get started even as a complete beginner who has never made a dime online before<br />
+          ✅A battle-tested strategy to hit your first ₦100k in 30 days using just your phone (no laptop)<br />
+          ✅The biggest secret most gurus hide - finally broken down step-by-step inside this free training
+        </p>
+
+        <div class="divider"></div>
+
+        <!-- text08 -->
+        <p id="text08" class="text-component reveal"><strong>Aside victor nathel there are even more extraordinary success stories from ordinary Nigerians….</strong></p>
+
+        <!-- image11, image12 -->
+        <div class="img-group reveal">
+          <div id="image11" class="image-component instance-11">
+            <span class="frame"><img src="assets/images/image11.jpg?v=1819d47d" alt="" /></span>
+          </div>
+          <div id="image12" class="image-component instance-12">
+            <span class="frame"><img src="assets/images/image12.jpg?v=1819d47d" alt="" /></span>
+          </div>
+        </div>
+
+        <!-- text09 -->
+        <p id="text09" class="text-component reveal"><strong>PLEASE NOTE: This is NOT for everyone</strong></p>
+
+        <!-- text10 -->
+        <p id="text10" class="text-component reveal">This is not for you:</p>
+
+        <!-- text11 -->
+        <p id="text11" class="text-component reveal">
+          💄If you can't invest 1hr - 2hrs daily to build a profitable online income.<br />
+          💄If you're not ready to learn the necessary skills to start earning 6 figures<br />
+          💄If you're a lazy person who loves to give excuses.
+        </p>
+
+        <!-- text12 -->
+        <p id="text12" class="text-component reveal"><strong>This Exclusive Training Is For ACTION TAKERS - Those Who're Ready To Break Free Financially Before 2026 Ends!</strong></p>
+
+        <!-- BUTTON 3 -->
+        <ul id="buttons03" class="buttons-component reveal">
+          <li><a href="https://chat.whatsapp.com/GYdrMOw2tpGGhaHhPxHReT?s=cl&p=i&mlu=4" class="n01" role="button">CLICK HERE TO ACCESS THE TRAINING</a></li>
+        </ul>
+
+        <div class="divider"></div>
+
+        <!-- text13 -->
+        <p id="text13" class="text-component reveal"><strong>Here Are More Common People Whose Lives Have Changed Because of The Amazing System You Are About to Discover in this Training</strong></p>
+
+        <!-- video01 -->
+        <div id="video01" class="video-component instance-1 reveal">
+          <div class="frame">
+            <iframe class="player" src="https://www.youtube-nocookie.com/embed/M5GEPP-CBTM?rel=0&loop=0&controls=1&cc_load_policy=0&autoplay=0" allowfullscreen="1" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+          </div>
+        </div>
+
+        <!-- video02 -->
+        <div id="video02" class="video-component instance-2 reveal">
+          <div class="frame">
+            <iframe class="player" src="https://www.youtube-nocookie.com/embed/nEwWNus-2Ws?rel=0&loop=0&controls=1&cc_load_policy=0&autoplay=0" allowfullscreen="1" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+          </div>
+        </div>
+
+        <!-- text14 -->
+        <p id="text14" class="text-component reveal">
+          <em>The training starts SOON and entry will be locked.<br />
+          Click the blue button now to access training - don't get left out. See you inside! Note that you need Telegram</em>
+        </p>
+
+        <!-- BUTTON 4 (original had 4 buttons total, keeping all) -->
+        <ul id="buttons04" class="buttons-component reveal">
+          <li><a href="https://chat.whatsapp.com/GYdrMOw2tpGGhaHhPxHReT?s=cl&p=i&mlu=4" class="n01" role="button">CLICK HERE TO ACCESS THE TRAINING</a></li>
+        </ul>
+
+        <!-- CREDITS -->
+        <div id="credits">
+          <span><a href="https://comepty-official.github.io/Comepty-Portfolio/contact.html">Made with comepty</a></span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(function(el) { el.classList.add('visible'); });
+      return;
+    }
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    els.forEach(function(el) { obs.observe(el); });
+  })();
+  </script>
+
+</body>
+</html>

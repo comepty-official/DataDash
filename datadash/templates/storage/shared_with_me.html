@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Shared With Me{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Shared With Me</h1>
+    <p class="page-subtitle">Files others have shared with you</p>
+  </div>
+</div>
+
+{% if received_items %}
+<div class="card-glass">
+  <div class="table-responsive">
+    <table class="dd-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Shared By</th>
+          <th>Permission</th>
+          <th>Date</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in received_items %}
+        <tr>
+          <td>
+            <div class="table-name">
+              <i class="bi bi-file-earmark"></i>
+              {{ item.get_item_name }}
+            </div>
+          </td>
+          <td>{{ item.shared_by.username }}</td>
+          <td><span class="badge-dd {% if item.permission == 'edit' %}green{% else %}gray{% endif %}">{{ item.permission|title }}</span></td>
+          <td class="text-muted">{{ item.created_at|date:"M d, Y" }}</td>
+          <td>
+            {% if item.file %}
+            <a href="{% url 'download_file' item.file.id %}" class="icon-btn" title="Download">
+              <i class="bi bi-download"></i>
+            </a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="empty-state">
+  <i class="bi bi-people empty-icon"></i>
+  <p>No files have been shared with you yet.</p>
+</div>
+{% endif %}
+{% endblock %}

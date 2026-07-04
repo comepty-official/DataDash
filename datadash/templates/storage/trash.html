@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Trash{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Trash</h1>
+    <p class="page-subtitle">Items here are deleted permanently after 30 days</p>
+  </div>
+  {% if deleted_files or deleted_folders %}
+  <form method="post" action="{% url 'empty_trash' %}" onsubmit="return confirm('Permanently delete all items in trash?')">
+    {% csrf_token %}
+    <button type="submit" class="btn-danger-dd">
+      <i class="bi bi-trash3-fill"></i> Empty Trash
+    </button>
+  </form>
+  {% endif %}
+</div>
+
+{% if deleted_files or deleted_folders %}
+<div class="card-glass">
+  <div class="table-responsive">
+    <table class="dd-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Size</th>
+          <th>Deleted</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for folder in deleted_folders %}
+        <tr>
+          <td>
+            <div class="table-name">
+              <i class="bi bi-folder" style="color:#6366f1"></i> {{ folder.name }}
+            </div>
+          </td>
+          <td><span class="badge-dd blue">Folder</span></td>
+          <td>—</td>
+          <td class="text-muted">{{ folder.deleted_at|timesince }} ago</td>
+          <td>
+            <div class="row-actions">
+              <a href="{% url 'restore_folder' folder.id %}" class="icon-btn" title="Restore"><i class="bi bi-arrow-counterclockwise"></i></a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+        {% for file in deleted_files %}
+        <tr>
+          <td>
+            <div class="table-name">
+              <i class="bi bi-{{ file.get_icon }}"></i> {{ file.name }}
+            </div>
+          </td>
+          <td><span class="badge-dd gray">File</span></td>
+          <td>{{ file.get_size_display }}</td>
+          <td class="text-muted">{{ file.deleted_at|timesince }} ago</td>
+          <td>
+            <div class="row-actions">
+              <a href="{% url 'restore_file' file.id %}" class="icon-btn" title="Restore"><i class="bi bi-arrow-counterclockwise"></i></a>
+              <a href="{% url 'permanent_delete_file' file.id %}" class="icon-btn danger" title="Delete permanently"
+                 onclick="return confirm('Permanently delete this file? This cannot be undone.')">
+                <i class="bi bi-trash3-fill"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="empty-state">
+  <i class="bi bi-trash3 empty-icon"></i>
+  <p>Trash is empty</p>
+</div>
+{% endif %}
+{% endblock %}

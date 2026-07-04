@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Recent{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Recent</h1>
+    <p class="page-subtitle">Your most recently uploaded files</p>
+  </div>
+</div>
+
+{% if recent_files %}
+<div class="card-glass">
+  <div class="file-list">
+    {% for file in recent_files %}
+    <div class="file-row">
+      <div class="file-icon-wrap">
+        <i class="bi bi-{{ file.get_icon }}"></i>
+      </div>
+      <div class="file-meta">
+        <p class="file-name">{{ file.name }}</p>
+        <p class="file-info">{{ file.get_size_display }} &middot; {{ file.created_at|timesince }} ago</p>
+      </div>
+      <div class="file-actions">
+        <a href="{% url 'download_file' file.id %}" class="icon-btn" title="Download"><i class="bi bi-download"></i></a>
+        <a href="{% url 'toggle_favorite' file.id %}" class="icon-btn {% if file.is_favorite %}active-fav{% endif %}" title="Favorite">
+          <i class="bi bi-star{% if file.is_favorite %}-fill{% endif %}"></i>
+        </a>
+        <a href="{% url 'delete_file' file.id %}" class="icon-btn danger" title="Delete"
+           onclick="return confirm('Move to trash?')"><i class="bi bi-trash3"></i></a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% else %}
+<div class="empty-state">
+  <i class="bi bi-clock-history empty-icon"></i>
+  <p>No recent files. Start uploading to see them here.</p>
+  <a href="{% url 'files' %}" class="btn-primary-dd">Upload Files</a>
+</div>
+{% endif %}
+{% endblock %}
