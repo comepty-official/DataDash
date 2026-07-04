@@ -153,9 +153,6 @@ INTERNAL_IPS = [
 ]
 
 
-INTERNAL_IPS = [
-    '127.0.0.1',
-]
 
 CACHES = {
     "default": {
