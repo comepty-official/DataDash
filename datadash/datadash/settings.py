@@ -135,31 +135,23 @@ if not DEBUG:
 
 # Dynamic Dev-Only Configuration for Debug Toolbar
 if DEBUG:
-    # Ensure it's present locally if not already there
-    if 'debug_toolbar' not in INSTALLED_APPS:
-        INSTALLED_APPS.append('debug_toolbar')
-    if 'debug_toolbar.middleware.DebugToolbarMiddleware' not in MIDDLEWARE:
-        # Insert it early in the middleware stack for local testing
-        MIDDLEWARE.insert(2, 'debug_toolbar.middleware.DebugToolbarMiddleware')
-else:
-    # Safely strip it out entirely in production on Render
-    if 'debug_toolbar' in INSTALLED_APPS:
-        INSTALLED_APPS.remove('debug_toolbar')
-    if 'debug_toolbar.middleware.DebugToolbarMiddleware' in MIDDLEWARE:
-        MIDDLEWARE.remove('debug_toolbar.middleware.DebugToolbarMiddleware')
-
-INTERNAL_IPS = [
-    '127.0.0.1',
-]
-
-
-
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://172.19.224.131:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+    # Use your local Redis setup when developing on your PC
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://172.19.224.131:6379/1",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
         }
     }
-}
+else:
+    # Use built-in dummy/locmem cache on Render so it doesn't crash looking for your PC
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            "LOCATION": "unique-snowflake",
+        }
+    }
+
+
