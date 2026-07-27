@@ -2,10 +2,11 @@ services:
   - type: web
     name: datadash
     runtime: python
-    pythonVersion: 3.12
     rootDir: datadash
     buildCommand: bash build.sh
     startCommand: gunicorn datadash.wsgi:application
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
       - key: DEBUG
         value: false
