@@ -131,9 +131,25 @@ if not DEBUG:
     X_FRAME_OPTIONS = 'DENY'
 
 
-# ... Keep your existing INSTALLED_APPS and MIDDLEWARE arrays exactly as they are above ...
-
 # Dynamic Dev-Only Configuration for Debug Toolbar
+if DEBUG:
+    # Ensure it's present locally if not already there
+    if 'debug_toolbar' not in INSTALLED_APPS:
+        INSTALLED_APPS.append('debug_toolbar')
+    if 'debug_toolbar.middleware.DebugToolbarMiddleware' not in MIDDLEWARE:
+        # Insert it early in the middleware stack for local testing
+        MIDDLEWARE.insert(2, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+    INTERNAL_IPS = [
+        '127.0.0.1',
+    ]
+else:
+    # Safely strip it out entirely in production on Render
+    if 'debug_toolbar' in INSTALLED_APPS:
+        INSTALLED_APPS.remove('debug_toolbar')
+    if 'debug_toolbar.middleware.DebugToolbarMiddleware' in MIDDLEWARE:
+        MIDDLEWARE.remove('debug_toolbar.middleware.DebugToolbarMiddleware')
+
+# CACHES: use local Redis when developing, fall back to locmem on Render
 if DEBUG:
     # Use your local Redis setup when developing on your PC
     CACHES = {
