@@ -57,22 +57,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'datadash.wsgi.application'
 
-# ---- UPDATED DATABASE CONFIGURATION FOR NEON TECH ----
+# ---- DATABASE CONFIGURATION FOR NEON TECH ----
 DATABASES = {
     'default': {
-        'ENGINE': 'dj_db_conn_pool.backends.postgresql',
-
-        'POOL_OPTIONS': {
-            'POOL_SIZE': 10,       # Number of permanent connections kept open
-            'MAX_OVERFLOW': 10,    # Maximum extra connections allowed during spikes
-            'RECYCLE': 300,        # Reset connections every 5 minutes to prevent stale links
-        },
-
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'neondb',
         'USER': 'neondb_owner',
         'PASSWORD': 'npg_Jk9gc5qObmAt',
         'HOST': 'ep-fancy-resonance-asa36azl-pooler.c-4.eu-central-1.aws.neon.tech',
-        'PORT': '5432',  # Default PostgreSQL port for Neon URL connections
+        'PORT': '5432',
         'OPTIONS': {
             'sslmode': 'require',
         },
@@ -169,5 +162,4 @@ else:
             "LOCATION": "unique-snowflake",
         }
     }
-
 
